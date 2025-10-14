@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  webhook:
+    build: .
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks: 
+      - taiganet 
+
+networks:
+  taiganet:
+    external:
+      name: taiga-docker_taiga # <-- taiga network - look docker network ls
