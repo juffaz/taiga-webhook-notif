@@ -26,24 +26,24 @@ The application requires configuration via environment variables, typically mana
 
 ### 1. Taiga API & Authentication (Mandatory)
 
-| **Variable** | **Description** | **Example** | 
-| `TAIGA_URL` | Your Taiga instance URL. | `https://taiga.site.az` | 
-| `TAIGA_USERNAME` | Username for API authentication (must have access to the project). | `api_user` | 
-| `TAIGA_PASSWORD` | Password for the API user. | `secure_password123` | 
+| **Variable**     |   **Description**                                                  | **Example**             | 
+| `TAIGA_URL`      | Your Taiga instance URL.                                           | `https://taiga.site.az` | 
+| `TAIGA_USERNAME` | Username for API authentication (must have access to the project). | `api_user`              | 
+| `TAIGA_PASSWORD` | Password for the API user.                                         | `secure_password123`    | 
 
 ### 2. SMTP Email Configuration (Mandatory for real sending)
 
 These credentials are used by the application to connect to your mail server and send notifications.
 
-| **Variable** | **Description** | **Example** |  | 
-| `SMTP_SERVER` | The hostname of your SMTP server. | `smtp.gmail.com` |  | 
-| `SMTP_PORT` | The port for your SMTP server (usually 587 for TLS). | `587` |  | 
-| `SMTP_LOGIN` | The email address to send notifications **from**. | `notifications@yourdomain.com` |  | 
+| **Variable**    | **Description**                                                 | **Example** |  | 
+| `SMTP_SERVER`   | The hostname of your SMTP server.                               | `smtp.gmail.com` |  | 
+| `SMTP_PORT`     | The port for your SMTP server (usually 587 for TLS).            | `587` |  | 
+| `SMTP_LOGIN`    | The email address to send notifications **from**.               | `notifications@yourdomain.com` |  | 
 | `SMTP_PASSWORD` | The password or **App Password** for the sending email account. | `app_password_xyz` |  | 
 
 ### 3. Service Fallback (Optional)
 
-| **Variable** | **Description** | **Example** | 
+| **Variable**     | **Description**                                                                           | **Example** | 
 | `FALLBACK_EMAIL` | Email used if API calls fail or no recipients are found. Set to `""` to disable fallback. | `admin@yourdomain.com` | 
 
 ---
