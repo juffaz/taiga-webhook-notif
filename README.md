@@ -27,7 +27,7 @@ The application requires configuration via environment variables, typically mana
 ### 1. Taiga API & Authentication (Mandatory)
 
 | **Variable** | **Description** | **Example** | 
-| `TAIGA_URL` | Your Taiga instance URL. | `https://taiga.synapps.az` | 
+| `TAIGA_URL` | Your Taiga instance URL. | `https://taiga.site.az` | 
 | `TAIGA_USERNAME` | Username for API authentication (must have access to the project). | `api_user` | 
 | `TAIGA_PASSWORD` | Password for the API user. | `secure_password123` | 
 
