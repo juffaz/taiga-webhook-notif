@@ -14,7 +14,7 @@ logging.basicConfig(level=logging.INFO,
 logger = logging.getLogger(__name__)
 
 # === Configuration ===
-TAIGA_URL = os.getenv("TAIGA_URL", "https://taiga.synapps.az")
+TAIGA_URL = os.getenv("TAIGA_URL", "https://taiga.site.az")
 TAIGA_USERNAME = os.getenv("TAIGA_USERNAME")
 TAIGA_PASSWORD = os.getenv("TAIGA_PASSWORD")
 FALLBACK_EMAIL = os.getenv("FALLBACK_EMAIL") 
