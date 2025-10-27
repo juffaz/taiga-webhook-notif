@@ -254,7 +254,7 @@ def handle_webhook():
 """
 
 
-    send_email(recipient_emails, subject, body)
+    send_email(recipient_emails, subject, body_html)
 
     logger.info("✅ Webhook processing successfully completed.")
     return jsonify({
