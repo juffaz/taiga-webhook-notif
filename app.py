@@ -24,6 +24,7 @@ SMTP_SERVER = os.getenv("SMTP_SERVER")
 SMTP_PORT = int(os.getenv("SMTP_PORT", 587)) 
 SMTP_LOGIN = os.getenv("SMTP_LOGIN")        
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")  
+FROM_EMAIL = os.getenv("FROM_EMAIL", SMTP_LOGIN)
 
 app = Flask(__name__)
 app.config['DEBUG'] = False 
@@ -103,7 +104,6 @@ def get_user_emails_by_ids(user_ids: list, token: str) -> list:
             
     return list(set(emails))
 
-# === ИСПРАВЛЕННАЯ ФУНКЦИЯ: Реальная отправка через SMTP ===
 def send_email(recipients: list, subject: str, body: str) -> None:
     """Sends an email using the configured SMTP server or falls back to mock."""
     if not recipients:
@@ -119,26 +119,27 @@ def send_email(recipients: list, subject: str, body: str) -> None:
         logger.info("---------------------")
         logger.info("✅ Email sent (Mocked)")
         return
-    
+
     logger.info("--- EMAIL CONTENT (ATTEMPTING SEND) ---")
     logger.info(f"TO: {', '.join(recipients)}")
     logger.info(f"SUBJECT: {subject}")
     logger.info("---------------------------------------")
-    
+
     try:
         msg = MIMEText(body)
         msg['Subject'] = subject
-        msg['From'] = SMTP_LOGIN
+        msg['From'] = FROM_EMAIL         # ✅ Используем FROM_EMAIL вместо SMTP_LOGIN
         msg['To'] = ', '.join(recipients)
 
         with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
-            server.starttls() 
+            server.starttls()
             server.login(SMTP_LOGIN, SMTP_PASSWORD)
-            server.sendmail(SMTP_LOGIN, recipients, msg.as_string())
-            
+            server.sendmail(FROM_EMAIL, recipients, msg.as_string())  # ✅ И здесь FROM_EMAIL
+
         logger.info("✅ Email sent successfully via SMTP.")
     except Exception as e:
         logger.critical(f"❌ CRITICAL ERROR: Failed to send email via SMTP: {e}")
+
 
 
 # === Webhook Handler (УСИЛЕННОЕ ЛОГИРОВАНИЕ) ===
