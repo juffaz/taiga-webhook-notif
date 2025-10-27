@@ -126,7 +126,7 @@ def send_email(recipients: list, subject: str, body: str) -> None:
     logger.info("---------------------------------------")
 
     try:
-        msg = MIMEText(body_html, "html")   #msg = MIMEText(body)
+        msg = MIMEText(body, "html")   #msg = MIMEText(body)
         msg['Subject'] = subject
         msg['From'] = FROM_EMAIL         # ✅ Используем FROM_EMAIL вместо SMTP_LOGIN
         msg['To'] = ', '.join(recipients)
@@ -235,23 +235,35 @@ def handle_webhook():
     
     body_html = f"""
 <html>
-  <body style="font-family:Arial,sans-serif; color:#333;">
-    <p><b>Taiga item updated</b></p>
-    <p>
-      <b>Type:</b> {task_type.upper()}<br>
-      <b>ID:</b> {item_ref}<br>
-      <b>Subject:</b> {details.get('subject', 'N/A')}<br>
-      <b>Action:</b> change by {data.get('by', {}).get('full_name', 'Unknown')}<br>
-      <b>Status:</b> {details.get('status_extra_info', {}).get('name', 'N/A')}<br>
-    </p>
-    <p>
-      <a href="{TAIGA_URL}/project/{project_slug}/{item_prefix}/{item_ref}">
-        Open in Taiga →
-      </a>
+  <body style="font-family:Segoe UI,Arial,sans-serif; color:#2d2d2d; background:#f7f8fa; padding:24px;">
+    <table width="100%" style="max-width:600px; margin:auto; background:white; border-radius:10px; box-shadow:0 2px 5px rgba(0,0,0,0.1); padding:24px;">
+      <tr>
+        <td>
+          <h2 style="color:#007acc; margin-bottom:10px;">Taiga item updated</h2>
+          <p style="font-size:14px; color:#555;">
+            <b>Type:</b> {task_type.upper()}<br>
+            <b>ID:</b> {item_ref}<br>
+            <b>Subject:</b> {details.get('subject', 'N/A')}<br>
+            <b>Action:</b> change by {data.get('by', {}).get('full_name', 'Unknown')}<br>
+            <b>Status:</b> {details.get('status_extra_info', {}).get('name', 'N/A')}<br>
+          </p>
+          <p style="margin-top:20px;">
+            <a href="{TAIGA_URL}/project/{project_slug}/{item_prefix}/{item_ref}" 
+               style="display:inline-block; background:#007acc; color:white; text-decoration:none; 
+                      padding:10px 16px; border-radius:6px;">
+               🔗 Open in Taiga
+            </a>
+          </p>
+        </td>
+      </tr>
+    </table>
+    <p style="text-align:center; color:#999; font-size:12px; margin-top:20px;">
+      Sent automatically by Taiga Watcher Service
     </p>
   </body>
 </html>
 """
+
 
 
     send_email(recipient_emails, subject, body_html)
