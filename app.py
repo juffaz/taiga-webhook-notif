@@ -126,7 +126,7 @@ def send_email(recipients: list, subject: str, body: str) -> None:
     logger.info("---------------------------------------")
 
     try:
-        msg = MIMEText(body)
+        msg = MIMEText(body_html, "html")   #msg = MIMEText(body)
         msg['Subject'] = subject
         msg['From'] = FROM_EMAIL         # ✅ Используем FROM_EMAIL вместо SMTP_LOGIN
         msg['To'] = ', '.join(recipients)
@@ -233,15 +233,26 @@ def handle_webhook():
     item_ref = details.get('ref') or task_id
     item_prefix = task_type[:2]
     
-    body = (
-        f"**Taiga item updated**\n\n"
-        f"Type: {task_type.upper()}\n"
-        f"ID: {item_ref}\n"
-        f"Subject: {details.get('subject', 'N/A')}\n"
-        f"Action: {task_action} by {data.get('by', {}).get('full_name', 'Unknown')}\n"
-        f"Status: {details.get('status_extra_info', {}).get('name', 'N/A')}\n\n"
-        f"Link: {TAIGA_URL}/project/{project_slug}/{item_prefix}/{item_ref}"
-    )
+    body_html = f"""
+<html>
+  <body style="font-family:Arial,sans-serif; color:#333;">
+    <p><b>Taiga item updated</b></p>
+    <p>
+      <b>Type:</b> {task_type.upper()}<br>
+      <b>ID:</b> {item_ref}<br>
+      <b>Subject:</b> {details.get('subject', 'N/A')}<br>
+      <b>Action:</b> change by {data.get('by', {}).get('full_name', 'Unknown')}<br>
+      <b>Status:</b> {details.get('status_extra_info', {}).get('name', 'N/A')}<br>
+    </p>
+    <p>
+      <a href="{TAIGA_URL}/project/{project_slug}/{item_prefix}/{item_ref}">
+        Open in Taiga →
+      </a>
+    </p>
+  </body>
+</html>
+"""
+
 
     send_email(recipient_emails, subject, body)
 
